@@ -4,6 +4,21 @@ import random
 
 # Functions for the game
 
+
+def end_game():
+    game_state_question = input("Would you like to play again? y/n: ")
+    if game_state_question == "n":
+        return False
+    elif game_state_question == "y":
+        hand.clear()
+        dealer.clear()
+        return True
+    else:
+        print("Did not recognize input")
+       
+
+
+
 def draw_card(hand, deck):
     print("")
     print("Drawing you 1 more card!")
@@ -19,9 +34,11 @@ def calculate_winner(hand, dealer):
         print("You lose, dealer wins!")
     else:
         print("It's a draw!")
+    
 
 
-def next_round(hand, deck):
+
+def next_round(hand, deck, game_state):
     answer = input("If you want to draw another card type `y`, If you want to stand type `n`: ")
     if answer == "y":
         draw_card(hand, deck)
@@ -29,7 +46,7 @@ def next_round(hand, deck):
         calculate_winner(hand, dealer)
     else:
         print("Did not recognize input, try again.")
-        next_round(hand, deck)
+        next_round(hand, deck, game_state)
 
 
 
@@ -45,20 +62,19 @@ def check_winner(deck, hand, dealer):
     print("Dealer has", dealer, "which equals to", sum(dealer))
     if sum(dealer) == 21:
         print("Dealer wins!")
+    elif sum(hand) == 21:
+        print("You win!")
     elif sum(dealer) > 21:
         print("Dealer loses, you win!")
     elif sum(hand) > 21:
         print("You lose!")
     else:
-        next_round(hand, deck)
+        next_round(hand, deck, game_state)
+    
 
 
 
-# Welcome message and a short explanation about the simplified rules for this game
-print("""Welcome to blackjack! Here are the rules:
 
-        Each participant attempts to beat the dealer by getting a count as close to 21 as possible, without going over 21.
-         At the start of each round you are given 2 cards and you can decide wether you stand or pick another card. Pretty simple!""")
 
 
 # This is the main deck for the game that contains every single card
@@ -68,6 +84,16 @@ deck = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
 hand = []
 dealer = []
+game_state = True
 
 
-game_start(deck)
+# Welcome message and a short explanation about the simplified rules for this game
+print("""Welcome to blackjack! Here are the rules:
+
+    Each participant attempts to beat the dealer by getting a count as close to 21 as possible, without going over 21.
+    At the start of each round you are given 2 cards and you can decide wether you stand or pick another card. Pretty simple!""")
+
+while game_state != False:
+    game_start(deck)
+    game_state = end_game()
+    
